@@ -9,13 +9,13 @@
 @bitsadmin /AddFile %JOB% %PYURL%%PYTHON% %cd%\%PYTHON% > NUL
 @bitsadmin /SetPriority %JOB% "FOREGROUND" > NUL
 @bitsadmin /Resume %JOB% > NUL
-:WAIT_DUMP_DATA_DOWNLOAD_LOOP_START
+:WAIT_DOWNLOAD_LOOP_START
     @call bitsadmin /info %JOB% /verbose | find "STATE: TRANSFERRED"
-    @if %ERRORLEVEL% equ 0 goto WAIT_DUMP_DATA_DOWNLOAD_LOOP_END
+    @if %ERRORLEVEL% equ 0 goto WAIT_DOWNLOAD_LOOP_END
     @call bitsadmin /RawReturn /GetBytesTransferred %JOB%
     @timeout 2
-    @goto WAIT_DUMP_DATA_DOWNLOAD_LOOP_START
-:WAIT_DUMP_DATA_DOWNLOAD_LOOP_END
+    @goto WAIT_DOWNLOAD_LOOP_START
+:WAIT_DOWNLOAD_LOOP_END
 @call bitsadmin /Complete %JOB% > NUL
 @echo download complete
 
